@@ -53,7 +53,7 @@ def write_delta_table(df, path, mode):
     Writes the given DataFrame to a Delta table at the specified path using the specified mode.
 
     Args:
-        df (pyspark.sql.DataFrame): The DataFrame to be written to the Delta table.
+        df (polars.DataFrame): The DataFrame to be written to the Delta table.
         path (str): The path where the Delta table will be created or updated.
         mode (str): The write mode to be used. Valid values are 'append', 'overwrite', 'ignore', and 'error'.
 
@@ -76,7 +76,7 @@ def merge_into_delta_table(df, path):
     Merge the given DataFrame into a Delta table located at the specified path.
 
     Parameters:
-    - df (pyspark.sql.DataFrame): The DataFrame to be merged into the Delta table.
+    - df (polars.DataFrame): The DataFrame to be merged into the Delta table.
     - path (str): The path to the Delta table.
 
     Returns:
