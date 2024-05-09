@@ -11,16 +11,35 @@ bootstrap_servers = ["localhost:9092"]
 delta_path = "./delta_tables"
 topics = ["client", "department", "employee", "sale"]
 
-# Function to create and configur Kafka consumer
 def create_consumer(topics, bootstrap_servers):
+    """
+    Creates a Kafka consumer with the specified topics and bootstrap servers.
+
+    Parameters:
+    - topics (list): A list of topics to subscribe to.
+    - bootstrap_servers (str): A string of bootstrap servers in the format "host:port".
+
+    Returns:
+    - KafkaConsumer: The created Kafka consumer.
+
+    """
     return KafkaConsumer(
         *topics,
         bootstrap_servers = bootstrap_servers,
         value_deserializer = lambda v: json.loads(v.decode("utf-8"))
     )
 
-# Function to process Kafka message
 def process_message(topic, data):
+    """
+    Process a message received from a topic.
+
+    Parameters:
+    - topic (str): The topic from which the message was received.
+    - data (dict): The data of the message.
+
+    Returns:
+    None
+    """
     df = pl.from_records([data])
     delta_table_path = f"{delta_path}/{topic}"
     if not os.path.exists(delta_table_path):
@@ -28,17 +47,43 @@ def process_message(topic, data):
     else:
         merge_into_delta_table(df, delta_table_path)
 
-# Function to write Delta table
 def write_delta_table(df, path, mode):
+    """
+    Writes the given DataFrame to a Delta table at the specified path using the specified mode.
+
+    Args:
+        df (pyspark.sql.DataFrame): The DataFrame to be written to the Delta table.
+        path (str): The path where the Delta table will be created or updated.
+        mode (str): The write mode to be used. Valid values are 'append', 'overwrite', 'ignore', and 'error'.
+
+    Returns:
+        None
+
+    Raises:
+        Exception: If an error occurs while writing the DataFrame to the Delta table.
+
+    """
     try:
-        df.write_delta(target = path, mode = mode)
+        df.write_delta(target=path, mode=mode)
         logging.info(f"{mode.capitalize()}ed message to Delta table: {df}")
     except Exception as e:
         logging.error(f"Failed to {mode} message to Delta table: {df}")
         logging.error(f"Error: {e}")
 
-# Function to merge message into Delta table
 def merge_into_delta_table(df, path):
+    """
+    Merge the given DataFrame into a Delta table located at the specified path.
+
+    Parameters:
+    - df (pyspark.sql.DataFrame): The DataFrame to be merged into the Delta table.
+    - path (str): The path to the Delta table.
+
+    Returns:
+    None
+
+    Raises:
+    - Exception: If an error occurs while merging the DataFrame into the Delta table.
+    """
     try:
         df.write_delta(
             target = path, mode = "merge",
