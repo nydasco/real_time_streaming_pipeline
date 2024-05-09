@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
+
 from kafka import KafkaProducer
 import csv
 import json
-import time
 import logging
 
 # Configuration

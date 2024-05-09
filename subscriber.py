@@ -1,5 +1,6 @@
+#!/usr/bin/env python3
+
 from kafka import KafkaConsumer
-from deltalake import DeltaTable
 import json
 import os
 import logging
