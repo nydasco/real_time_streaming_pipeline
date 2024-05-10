@@ -1,0 +1,6 @@
+deltalake==0.17.3
+kafka-python-ng==2.2.2
+numpy==1.26.4
+polars==0.20.23
+pyarrow==16.0.0
+pyarrow-hotfix==0.6
