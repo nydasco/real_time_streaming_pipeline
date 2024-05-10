@@ -42,7 +42,13 @@ complete = sale.join(
                 right_on = "id", 
                 how = "inner"
                 ).select(
-                        ["id", "employee_name", "department", "client_name", "date", "region", "sale"]
+                        pl.col("id").str.to_integer(),
+                        pl.col("employee_name"), 
+                        pl.col("department"), 
+                        pl.col("client_name"), 
+                        pl.col("date").str.to_date("%d/%m/%Y"), 
+                        pl.col("region"), 
+                        pl.col("sale").str.to_decimal(2),
                         )
 
 print(complete)
