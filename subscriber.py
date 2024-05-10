@@ -99,11 +99,8 @@ def merge_into_delta_table(df, path):
         logging.error(f"Failed to merge message to Delta table: {df}")
         logging.error(f"Error: {e}")
 
-def main():
+if __name__ == "__main__":
     consumer = create_consumer(topics, bootstrap_servers)
     for message in consumer:
         process_message(message.topic, message.value)
-
-if __name__ == "__main__":
-    main()
 
