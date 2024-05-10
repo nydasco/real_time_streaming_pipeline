@@ -21,7 +21,8 @@ employee = employee.with_columns(
     )
 
 # Join DataFrames, initially the employee and department DataFrames, followed by the sale DataFrame with the 
-# previously joined DataFrame plus the client DataFrame. We then select the fields we want to use.
+# previously joined DataFrame plus the client DataFrame. We then select the fields we want to use and change the 
+# datatypes of those that we need to.
 employee_dept = employee.join(
         department, 
         left_on = "department_id", 
@@ -29,8 +30,6 @@ employee_dept = employee.join(
         how = "inner").select(
                 ["id", "employee_name", "department_id", "department"]
                 )
-
-print(employee_dept)
 
 complete = sale.join(
         employee_dept,
