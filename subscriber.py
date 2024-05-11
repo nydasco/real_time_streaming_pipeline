@@ -5,12 +5,16 @@ import json
 import os
 import logging
 import polars as pl
+import tomli
 
 # Configuration
-logging.basicConfig(level = logging.INFO)
-bootstrap_servers = ["localhost:9092"]
-delta_path = "./delta_tables"
-topics = ["client", "department", "employee", "sale"]
+with open("parameters.toml", mode = "rb") as params:
+    config = tomli.load(params)
+
+logging.basicConfig(level = config["logging"]["level"])
+bootstrap_servers = config["kafka"]["bootstrap_servers"]
+topics = config["kafka"]["topics"]
+delta_path = config["kafka"]["delta_path"]
 
 def create_consumer(topics, bootstrap_servers):
     """

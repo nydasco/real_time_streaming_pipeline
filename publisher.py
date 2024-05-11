@@ -4,12 +4,17 @@ from kafka import KafkaProducer
 import csv
 import json
 import logging
+import tomli
 
 # Configuration
-logging.basicConfig(level = logging.INFO)
-bootstrap_servers = ["localhost:9092"]
-raw_path = "./raw_data"
-topics = ["client", "department", "employee", "sale"]
+with open("parameters.toml", "rb") as params:
+    config = tomli.load(params)
+
+logging.basicConfig(level = config["logging"]["level"])
+bootstrap_servers = config["kafka"]["bootstrap_servers"]
+topics = config["kafka"]["topics"]
+raw_path = config["data"]["raw_path"]
+batch_size = config["data"]["batch_size"]
 
 def create_producer(bootstrap_servers):
     """
@@ -72,7 +77,7 @@ def process_files_and_send(producer, topics):
             with open(f"{raw_path}/{topic}.csv", encoding="utf-8-sig") as csvfile:
                 csvreader = csv.DictReader(csvfile)
                 batch = []
-                batch_size = 10  # Adjust batch size based on your scenario. 1 is realtime, while 100 will be faster but consume more memory.
+                batch_size = batch_size
 
                 for rows in csvreader:
                     batch.append(rows)

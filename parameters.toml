@@ -1,0 +1,12 @@
+[general]
+logging_level = "logging.INFO"
+bootstrap_servers = ["localhost:9092"]
+topics = ["client", "department", "employee", "sale"]
+
+[publisher]
+raw_path = "./raw_data"
+batch_size = 10
+
+[subscriber]
+delta_path = "./delta_tables"
+
