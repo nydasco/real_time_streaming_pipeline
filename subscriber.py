@@ -11,10 +11,10 @@ import tomli
 with open("parameters.toml", mode = "rb") as params:
     config = tomli.load(params)
 
-logging.basicConfig(level = config["logging"]["level"])
-bootstrap_servers = config["kafka"]["bootstrap_servers"]
-topics = config["kafka"]["topics"]
-delta_path = config["kafka"]["delta_path"]
+logging.basicConfig(level = config["general"]["logging_level"])
+bootstrap_servers = config["general"]["bootstrap_servers"]
+topics = config["general"]["topics"]
+delta_path = config["subscriber"]["delta_path"]
 
 def create_consumer(topics, bootstrap_servers):
     """

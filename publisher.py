@@ -10,11 +10,11 @@ import tomli
 with open("parameters.toml", "rb") as params:
     config = tomli.load(params)
 
-logging.basicConfig(level = config["logging"]["level"])
-bootstrap_servers = config["kafka"]["bootstrap_servers"]
-topics = config["kafka"]["topics"]
-raw_path = config["data"]["raw_path"]
-batch_size = config["data"]["batch_size"]
+logging.basicConfig(level = config["general"]["logging_level"])
+bootstrap_servers = config["general"]["bootstrap_servers"]
+topics = config["general"]["topics"]
+raw_path = config["publisher"]["raw_path"]
+batch_size = config["publisher"]["batch_size"]
 
 def create_producer(bootstrap_servers):
     """
@@ -56,7 +56,7 @@ def send_messages(producer, topic, messages):
     except Exception as e:
         logging.error(f"Failed to send messages to topic '{topic}'. Error: {e}")
 
-def process_files_and_send(producer, topics):
+def process_files_and_send(producer, topics, batch_size):
     """
     Process files and send their contents to a Kafka producer.
 
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     producer = create_producer(bootstrap_servers)
     
     try:
-        process_files_and_send(producer, topics)
+        process_files_and_send(producer, topics, batch_size)
     finally:
         producer.close()
 
