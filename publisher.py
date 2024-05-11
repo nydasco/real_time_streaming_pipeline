@@ -77,7 +77,6 @@ def process_files_and_send(producer, topics, batch_size):
             with open(f"{raw_path}/{topic}.csv", encoding="utf-8-sig") as csvfile:
                 csvreader = csv.DictReader(csvfile)
                 batch = []
-                batch_size = batch_size
 
                 for rows in csvreader:
                     batch.append(rows)
